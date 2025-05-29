@@ -143,88 +143,63 @@ double Decoder(TSol s)
         sC[i] = i; 
     }
 
-    /*
-    std::cout << "Valores de rk: ";
-    int counter = 0;
-    for (double val : s.rk) { 
-        std::cout << val << "(" << counter << ")" << " ";
-        counter++;
-    }   
-    std::cout << std::endl;
-
-    std::cout << "Valores de sC: ";
-    for (int val : sC) {
-        std::cout << val << " ";
-    }   
-    std::cout << std::endl;
-    */
-
+    
     // Sort the list based on values in the random-key vector (rk)
     std::sort(sC.begin(), sC.end(), [&s](int i1, int i2) {
         return s.rk[i1] < s.rk[i2];
     });
     
-    /*
-    std::cout << "Valores de sC: ";
-    for (int val : sC) {
-        std::cout << val << " ";
-    }   
-    std::cout << std::endl;
-    */
-
-    std::vector<vector<int>> sol(M);  
+    std::vector<bool> selecionado(n, false);
+    int custo_total = 0;
     
-    int veiculoAtual = 0;
-    for(unsigned i = 0; i < n; i++) {
-        if (sC[i] > N - 1) {
-            veiculoAtual++;
-            continue;
-        }
-        sol[veiculoAtual].push_back(sC[i]);
-    }
+     for (int i : sC) {
+        if (selecionado[i]) continue;
 
-    /*
-    for(unsigned i = 0; i < M; i++) {
-        cout << "Rota " << i + 1 << ": ";
-        for(unsigned j = 0; j < sol[i].size(); j++) {
-            cout << sol[i][j] << " ";
-        }
-        cout << "\n";
-    }
-    */
-
-    // Objective function
-    s.ofv = 0.0;
-    double totalTime = 0.0;
-    double largestTime = 0.0;
-    for (unsigned vehicle = 0; vehicle < M; vehicle++) {
-        double routeTime = 0.0;
-        int size = sol[vehicle].size();
-        for (int i = 0; i < size - 1; i++)
-            routeTime += times[sol[vehicle][i]+1][sol[vehicle][i+1]+1];
-        if (size >= 1)
-            routeTime += times[0][sol[vehicle][0]+1] + times[0][sol[vehicle][size - 1]+1];
-        totalTime += routeTime;
-        if (routeTime > largestTime)
-            largestTime = routeTime;
-    }
-    s.ofv = largestTime;
-
-    // Print solution
-    if (debug && print) {
-        cout << endl;
-        for (int i = 0; i < M; i++) {
-            std::cout << "Vehicle " << (i + 1) << ": ";
-            for (int j : sol[i]) {
-                std::cout << j << " ";
+        // Verificar se pré-requisitos já estão selecionados
+        bool pode_adicionar = true;
+        for (auto [pre, pos] : P) {
+            if (pos == i && !selecionado[pre]) {
+                pode_adicionar = false;
+                break;
             }
-            std::cout << std::endl;
         }
-        std::cout << "Travel time: " << s.ofv << std::endl;
-    } 
     
-    // Return the objective function value
-    return s.ofv;
+        if (!pode_adicionar) continue;
+
+        // Verificar se cabe no orçamento
+        if (custo_total + c[i] <= b) {
+            selecionado[i] = true;
+            custo_total += c[i];
+        }
+    }
+
+     // Calcula lucro total dos clientes satisfeitos
+    double lucro_total = 0.0;
+    std::vector<bool> cliente_satisfeito(m, true);
+
+    for (auto [req, cliente] : Q) {
+        if (!selecionado[req]) {
+            cliente_satisfeito[cliente] = false;
+        }
+    }
+
+    for (int i = 0; i < m; ++i) {
+        if (cliente_satisfeito[i]) {
+            lucro_total += w[i];
+        }
+    }
+
+    s.ofv = lucro_total;
+
+    if (debug && print) {
+        std::cout << "Lucro total: " << lucro_total << "\nRequisitos selecionados: ";
+        for (int i = 0; i < n; ++i) {
+            if (selecionado[i]) std::cout << i << " ";
+        }
+        std::cout << std::endl;
+    }
+
+    return lucro_total;
 }
 
 /************************************************************************************
