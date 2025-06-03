@@ -91,7 +91,7 @@ def experiment1():
                     print(f"Comando:{command}")
                     print(f"Return code: {e.returncode}")
                     #exit()
-                    rep -=1
+                    #rep -=1
                 rep += 1
 
     print("Experiments completed!")
