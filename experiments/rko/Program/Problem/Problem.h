@@ -30,7 +30,7 @@ struct Problem {
     // Carrega os dados de um arquivo
     static Problem LoadFromFile(const std::string& instanceName) {
         Problem p;
-        const double f = 0.7;
+        const double f = 0.3;   //Orçamento --> 30% do total
         const std::string fullPath = "../Instances/" + instanceName;
 
         std::ifstream file(fullPath);
@@ -83,7 +83,7 @@ struct Problem {
 
 // --- Interface Global para Compatibilidade ---
 inline Problem g_problem_instance;
-extern int n; 
+extern int n;   //VETOR DE CHAVE ALEATORIA DO RKO --> todos os requisitos
 
 inline void FreeMemoryProblem() {
     g_problem_instance.clear();
