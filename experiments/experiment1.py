@@ -16,9 +16,9 @@ def experiment1():
     os.makedirs(results_dir, exist_ok = True)
 
     # parâmetros
-    max_runtime = 60
+    max_runtime = 1
     max_runs = 1
-    num_replicacoes = 5
+    num_replicacoes = 1
 
     metaheuristics = {
         "BRKGA": 0, "SA": 1, "GRASP": 2, "ILS": 3, "VNS": 4, "PSO": 5, "GA": 6, "LNS": 7, "BRKGA_CS": 8, "RKO": 9
