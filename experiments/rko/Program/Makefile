@@ -11,7 +11,7 @@ endif
 LDFLAGS=-L/opt/homebrew/opt/libomp/lib
 CPPFLAGS=-I/opt/homebrew/opt/libomp/include
 
-CCC = g++-15
+CCC = g++
 TARGETDIR = .
 
 CCFLAGS = -fopenmp -g -O3 -Wall -std=c++2a -Wno-unused-but-set-variable

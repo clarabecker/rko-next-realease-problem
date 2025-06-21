@@ -1,13 +1,13 @@
 Instance | Max Run Time | Max Runs
-NRP/nrp-g3.txt	1	1
-NRP/nrp-g2.txt	1	1
-NRP/nrp-g1.txt	1	1
-NRP/nrp-e2.txt	1	1
-NRP/nrp-e3.txt	1	1
-NRP/nrp-e1.txt	1	1
-NRP/nrp-e4.txt	1	1
-NRP/nrp1.txt	1	1
-NRP/nrp3.txt	1	1
-NRP/nrp2.txt	1	1
-NRP/nrp5.txt	1	1
-NRP/nrp4.txt	1	1
+NRP/nrp-e2.txt	10	1
+NRP/nrp-g2.txt	10	1
+NRP/nrp1.txt	10	1
+NRP/nrp4.txt	10	1
+NRP/nrp-e4.txt	10	1
+NRP/nrp2.txt	10	1
+NRP/nrp-g1.txt	10	1
+NRP/nrp-e3.txt	10	1
+NRP/nrp3.txt	10	1
+NRP/nrp-e1.txt	10	1
+NRP/nrp5.txt	10	1
+NRP/nrp-g3.txt	10	1

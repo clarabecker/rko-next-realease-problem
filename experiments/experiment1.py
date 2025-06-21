@@ -18,10 +18,10 @@ def experiment1():
     # parâmetros
     max_runtime = 1
     max_runs = 1
-    num_replicacoes = 1
+    num_replicacoes = 10
 
     metaheuristics = {
-        "BRKGA": 0, "SA": 1, "GRASP": 2, "ILS": 3, "VNS": 4, "PSO": 5, "GA": 6, "LNS": 7, "BRKGA_CS": 8, "RKO": 9
+        "BRKGA": 0,  "GA": 6, "BRKGA_CS": 8, "RKO": 9
     }
 
     tuning_method = 0
@@ -66,7 +66,7 @@ def experiment1():
                     stdout = result.stdout
 
                     blocks = re.findall(
-                        r"Instance:\s*(.*?)\s+ofv:\s*([0-9.]+)\s+Lucro total: \s*([0-9.]+)\s+Requisitos selecionados: *([0-9.]+)",
+                        r"Instance:\s*(.*?)\s+ofv:\s*(-?[0-9.]+)\s+Total time:\s*([0-9.]+)\s+Best time:\s*([0-9.]+)",
                         stdout,
                         re.DOTALL
                     )
@@ -91,7 +91,7 @@ def experiment1():
                     print(f"Comando:{command}")
                     print(f"Return code: {e.returncode}")
                     #exit()
-                    #rep -=1
+                    rep -=1
                 rep += 1
 
     print("Experiments completed!")
