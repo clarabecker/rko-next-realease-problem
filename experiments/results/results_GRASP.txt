@@ -1,3 +1,0 @@
-Algorithm: GRASP
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

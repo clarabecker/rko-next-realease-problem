@@ -1,3 +1,0 @@
-Algorithm: VNS
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

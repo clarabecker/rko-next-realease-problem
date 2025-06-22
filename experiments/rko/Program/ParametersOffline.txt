@@ -31,9 +31,9 @@ c2 = {2.05}
 w  = {0.73}
 
 SGA
-sizePop  = {400}
-probCros = {0.98}
-probMut  = {0.005}
+sizePop  = {300}
+probCros = {0.90}
+probMut  = {0.02}
 
 LNS
 betaMin = {0.10}
@@ -42,7 +42,7 @@ TO = {10000}
 alphaLNS = {0.95}
 
 BRKGA-CS
-p    = {610}
-pe   = {0.20}
-pm   = {0.001}
-Rhoe = {0.65}
+p    = {800}
+pe   = {0.15}
+pm   = {0.02}
+rhoe = {0.70}

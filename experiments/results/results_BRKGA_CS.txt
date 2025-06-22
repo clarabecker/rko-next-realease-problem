@@ -1,3 +1,0 @@
-Algorithm: BRKGA_CS
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

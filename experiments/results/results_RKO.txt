@@ -1,3 +1,0 @@
-Algorithm: RKO
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

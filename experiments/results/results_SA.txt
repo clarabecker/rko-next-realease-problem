@@ -1,3 +1,0 @@
-Algorithm: SA
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

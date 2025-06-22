@@ -1,3 +1,0 @@
-Algorithm: ILS
-============================================================
-Replication	Instance	OFV	Total Time	Best Time

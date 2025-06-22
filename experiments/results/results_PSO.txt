@@ -1,3 +1,0 @@
-Algorithm: PSO
-============================================================
-Replication	Instance	OFV	Total Time	Best Time
