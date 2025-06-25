@@ -1,6 +1,7 @@
 #ifndef PROBLEM_H
 #define PROBLEM_H
 
+#include <chrono>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -20,11 +21,15 @@ struct Problem {
     std::vector<std::pair<int, int>> P, Q;
     std::vector<std::vector<int>> S;
 
+    // Novo vetor para dependências indexadas por requisito (para otimização do Decoder)
+    std::vector<std::vector<int>> depsPorReq;
+
     // Método para limpar a instância
     void clear() {
         N = M = b = 0;
         c.clear(); w.clear(); v.clear();
         P.clear(); Q.clear(); S.clear();
+        depsPorReq.clear();
     }
 
     // Carrega os dados de um arquivo
@@ -77,6 +82,15 @@ struct Problem {
             p.v[item.first] += p.w[item.second];
             p.S[item.first].push_back(item.second);
         }
+
+        // Preencher depsPorReq para acelerar o decoder
+        p.depsPorReq.resize(p.N);
+        for (const auto& dep : p.P) {
+            int from = dep.first;
+            int to = dep.second;
+            p.depsPorReq[to].push_back(from);
+        }
+
         return p;
     }
 };
@@ -102,48 +116,53 @@ inline void ReadData(const char nameTable[]) {
 
 inline double Decoder(TSol s) {
     const auto& problem = g_problem_instance;
-    std::vector<int> sC(problem.N);
-    std::iota(sC.begin(), sC.end(), 0); 
+    std::vector<int> ordem(problem.N);
+    std::iota(ordem.begin(), ordem.end(), 0);
 
-    std::sort(sC.begin(), sC.end(), [&](int i1, int i2) {
-        return s.rk[i1] < s.rk[i2];
+    // Ordenar requisitos com base nas random keys
+    std::sort(ordem.begin(), ordem.end(), [&](int i, int j) {
+        return s.rk[i] < s.rk[j];
     });
 
     std::vector<bool> selecionado(problem.N, false);
     int custo_total = 0;
 
-    for (int req_idx : sC) {
-        bool pode_adicionar = true;
-        for (const auto& dep : problem.P) {
-            if (dep.second == req_idx && !selecionado[dep.first]) {
-                pode_adicionar = false;
+    for (int req : ordem) {
+        // Verifica se todas as dependências estão selecionadas
+        bool dependencias_ok = true;
+        for (int dep : problem.depsPorReq[req]) {
+            if (!selecionado[dep]) {
+                dependencias_ok = false;
                 break;
             }
         }
-        if (!pode_adicionar) continue;
 
-        if (custo_total + problem.c[req_idx] <= problem.b) {
-            selecionado[req_idx] = true;
-            custo_total += problem.c[req_idx];
+        if (!dependencias_ok) continue;
+
+        if (custo_total + problem.c[req] <= problem.b) {
+            selecionado[req] = true;
+            custo_total += problem.c[req];
         }
     }
 
+    // Verificar clientes satisfeitos
     double lucro_total = 0.0;
     std::vector<bool> cliente_satisfeito(problem.M, true);
 
-    for (const auto& item : problem.Q) {
-        if (!selecionado[item.first]) {
-            cliente_satisfeito[item.second] = false;
-        }
-    }
-    for (int i = 0; i < problem.M; ++i) {
-        if (cliente_satisfeito[i]) {
-            lucro_total += problem.w[i];
+    for (const auto& [req, cli] : problem.Q) {
+        if (!selecionado[req]) {
+            cliente_satisfeito[cli] = false;
         }
     }
 
-    s.ofv = lucro_total * (-1);
-    return lucro_total * (-1);
+    for (int j = 0; j < problem.M; ++j) {
+        if (cliente_satisfeito[j]) {
+            lucro_total += problem.w[j];
+        }
+    }
+
+    s.ofv = -lucro_total;
+    return -lucro_total;
 }
 
 #endif
