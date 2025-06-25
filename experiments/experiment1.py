@@ -18,11 +18,12 @@ def experiment1():
     # parâmetros
     max_runtime = 1
     max_runs = 1
-    num_replicacoes = 1
+    num_replicacoes = 10
 
     metaheuristics = {
         "BRKGA": 0,
-        "BRKGA_CS": 8, "RKO": 9
+        "BRKGA_CS": 8,
+        "RKO": 9
     }
 
     tuning_method = 0
