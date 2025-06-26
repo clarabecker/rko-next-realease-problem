@@ -1,3 +1,0 @@
-Algorithm: GA
-============================================================
-Replication	Instance	OFV	Total Time	Best Time
