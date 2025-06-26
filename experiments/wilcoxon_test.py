@@ -18,9 +18,9 @@ def plot_bar_comparison(df_plot):
     x = np.arange(len(df_plot['Instance']))
     width = 0.35  # Largura das barras
 
-    # Criando as barras para cada algoritmo
-    rects1 = ax.bar(x - width/2, df_plot['BRKGA_avg'], width, label='BRKGA', color='royalblue')
-    rects2 = ax.bar(x + width/2, df_plot['BRKGA_CS_avg'], width, label='BRKGA_CS', color='darkorange')
+    # Criando as barras para cada algoritmo, garantindo valores positivos
+    rects1 = ax.bar(x - width / 2, df_plot['BRKGA_avg'].abs(), width, label='BRKGA', color='royalblue')
+    rects2 = ax.bar(x + width / 2, df_plot['BRKGA_CS_avg'].abs(), width, label='BRKGA_CS', color='darkorange')
 
     # Adicionando títulos e legendas
     ax.set_ylabel('Valor Médio da Função Objetivo (Score)', fontsize=12)
@@ -31,8 +31,8 @@ def plot_bar_comparison(df_plot):
     ax.grid(axis='x') # Remove a grade vertical para um visual mais limpo
 
     # Adiciona os valores no topo das barras (opcional)
-    ax.bar_label(rects1, padding=3, fmt='%.0f', rotation=90)
-    ax.bar_label(rects2, padding=3, fmt='%.0f', rotation=90)
+    ax.bar_label(rects1, padding=3, fmt='%.0f', rotation=90, fontsize=12)
+    ax.bar_label(rects2, padding=3, fmt='%.0f', rotation=90, fontsize=12)
 
     fig.tight_layout()  # Ajusta o layout para evitar sobreposição
     plt.show()

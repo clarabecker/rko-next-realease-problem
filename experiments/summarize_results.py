@@ -4,7 +4,11 @@ import numpy as np
 
 # Caminho da pasta de resultados
 # Para funcionar corretamente, ajuste o caminho ou rode a partir do diretório do script
-results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+try:
+    results_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "results")
+except NameError:
+    # Fallback para execução interativa (ex: Jupyter Notebook)
+    results_dir = "results"
 
 # Baselines por instância (melhores valores conhecidos)
 baseline = {
@@ -54,6 +58,7 @@ def summarize_results():
 
                 mean_ofv = group["OFV"].mean()
                 min_ofv = group["OFV"].min()
+                std_ofv = group["OFV"].std()
 
                 # 2. Gap para o Baseline (Qualidade)
                 baseline_value = baseline[instance]
@@ -62,10 +67,12 @@ def summarize_results():
                 else:
                     baseline_gap = 0.0
 
+                # 3. ATUALIZAÇÃO DO DICIONÁRIO DE RESULTADOS
                 all_results.append({
                     "Instance": instance,
                     "Algorithm": alg_name,
-                    "Avg_Best": f"{mean_ofv:.3f} / {min_ofv:.3f}",
+                    # Adiciona o desvio padrão (std) ao lado da média
+                    "Avg_Std_Best": f"{mean_ofv:.3f} ± {std_ofv:.3f} / {min_ofv:.3f}",
                     "Baseline_Gap(%)": f"{baseline_gap:.2f}",
                 })
 
@@ -78,16 +85,17 @@ def summarize_results():
 
     df_all = pd.DataFrame(all_results)
 
-    # --- SEÇÃO DE PIVOT ATUALIZADA PARA INCLUIR OS DOIS GAPS ---
-    df_avg_best = df_all.pivot(index="Instance", columns="Algorithm", values="Avg_Best")
-    df_baseline_gap = df_all.pivot(index="Instance", columns="Algorithm", values="Baseline_Gap(%)") # Novo pivot
+    # --- SEÇÃO DE PIVOT ATUALIZADA PARA O NOVO FORMATO ---
+    # Renomeada a variável para maior clareza
+    df_summary = df_all.pivot(index="Instance", columns="Algorithm", values="Avg_Std_Best")
+    df_baseline_gap = df_all.pivot(index="Instance", columns="Algorithm", values="Baseline_Gap(%)")
 
-    # Renomeia colunas para clareza
-    df_avg_best.columns = [f"{col} (avg / best)" for col in df_avg_best.columns]
-    df_baseline_gap.columns = [f"{col} (baseline gap %)" for col in df_baseline_gap.columns] # Novo rename
+    # Renomeia colunas para clareza, refletindo o novo formato
+    df_summary.columns = [f"{col} (avg ± std / best)" for col in df_summary.columns]
+    df_baseline_gap.columns = [f"{col} (baseline gap %)" for col in df_baseline_gap.columns]
 
     # Junta todos os dataframes em uma ordem lógica
-    df_final = pd.concat([df_avg_best, df_baseline_gap], axis=1).sort_index()
+    df_final = pd.concat([df_summary, df_baseline_gap], axis=1).sort_index()
 
     # Salva o CSV final com um nome descritivo
     output_path = os.path.join(results_dir, "summarized_results.csv")
