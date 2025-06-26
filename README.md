@@ -27,14 +27,15 @@ Este projeto utiliza a abordagem de **chaves aleatórias (Random-Key Encoding)**
 - [g++ com suporte a OpenMP (ex: g++-13 ou superior no Mac via Homebrew)](https://brew.sh/)
 - [`make`](https://www.gnu.org/software/make/)
 
+### Passo a passo de execução 
+- Acessar pasta experiment/rko/Program
+  
 ### Compilar
 
 ```bash
 make rebuild
 ```
 ### Executar
-
-
 
 ./runTest ../Instances/testScenario.csv K T D
 
