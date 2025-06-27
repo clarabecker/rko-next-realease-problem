@@ -21,9 +21,11 @@ def experiment1():
     num_replicacoes = 10
 
     metaheuristics = {
-        "BRKGA": 0,
-        "BRKGA_CS": 8,
-        "RKO": 9
+        #"BRKGA": 0,
+        #"BRKGA_CS": 8,
+        #"RKO": 9
+        "LNS" : 7,
+        "GA": 6
     }
 
     tuning_method = 0
