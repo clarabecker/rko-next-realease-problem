@@ -16,7 +16,7 @@ Este projeto utiliza a abordagem de **chaves aleatórias (Random-Key Encoding)**
 ## Tecnologias
 
 - C++
-- OpenMP (para paralelização)
+- Python
 - Makefile
 - MacOS/Linux compatível
 
